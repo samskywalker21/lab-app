@@ -17,4 +17,7 @@ export const env = cleanEnv( process.env, {
     example: 'http://localhost:3000',
     docs: 'https://better-auth.com/docs/installation',
   } ),
+  ADMIN_PASSWORD: str( {
+    desc: 'Initial password for the administrator account',
+  } ),
 } )

@@ -6,12 +6,11 @@
     :state="state"
     @submit="onSubmit"
   >
-    <UFormField label="Email" name="email">
+    <UFormField label="Username" name="username">
       <UInput
         class="w-full"
         icon="i-tabler-user-circle"
-        type="email"
-        v-model="state.email"
+        v-model="state.username"
       />
     </UFormField>
     <UFormField label="Password" name="password">
@@ -43,21 +42,53 @@ definePageMeta( {
   layout: 'auth',
 } )
 
+const toast = useToast()
 const showPassword = ref( false )
 
 const schema = z.object( {
-  email: z.email( 'Required' ).trim(),
-  password: z.string( 'Required' ).min( 1, 'Required' ).trim(),
+  username: z.string( 'Invalid username' ).trim().min( 1, 'Invalid username' ),
+  password: z.string( 'Invalid password' ).trim().min( 1, 'Invalid Password' ),
 } )
 
 type FormSchema = z.infer< typeof schema >
 
 const state = reactive< Partial< FormSchema > >( {
-  email: undefined,
+  username: undefined,
   password: undefined,
 } )
 
-async function onSubmit( event: FormSubmitEvent< FormSchema > ) {}
+function clearForm() {
+  state.username = undefined
+  state.password = undefined
+}
+
+async function onSubmit( event: FormSubmitEvent< FormSchema > ) {
+  event.preventDefault()
+  event.stopPropagation()
+  const { username, password } = event.data
+
+  const { error } = await authClient.signIn.username( {
+    username,
+    password,
+  } )
+
+  if ( error ) {
+    toast.add( {
+      title: 'Error',
+      description: error.message,
+      color: 'error',
+    } )
+    return
+  }
+
+  clearForm()
+  toast.add( {
+    title: 'Success',
+    description: 'Redirecting',
+    color: 'success',
+  } )
+  await navigateTo( '/dashboard' )
+}
 </script>
 
 <style scoped>

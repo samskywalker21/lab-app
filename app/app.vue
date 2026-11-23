@@ -1,5 +1,10 @@
+import * as ui from '#build/ui';
 <template>
-  <UApp>
+  <UApp
+    :toaster="{
+      position: 'top-right',
+    }"
+  >
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>

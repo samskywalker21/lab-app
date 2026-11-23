@@ -23,6 +23,7 @@ model User {
   firstName     String
   lastName      String
   role          Role      @default(user)
+  username      String    @unique
   email         String
   emailVerified Boolean   @default(false)
   image         String?
