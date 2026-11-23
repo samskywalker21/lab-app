@@ -30,14 +30,26 @@ const open = defineModel< boolean >( 'open', { default: true } )
 const main: NavigationMenuItem[] = [
   {
     label: 'Home',
-    open: true,
-    children: [
-      {
-        label: 'Dashboard',
-        type: 'link',
-        to: '/dashboard',
-      },
-    ],
+    type: 'label',
+  },
+  {
+    label: 'Dashboard',
+    type: 'link',
+    to: '/dashboard',
+  },
+  {
+    label: 'Specimen',
+    type: 'label',
+  },
+  {
+    label: 'Add Specimen',
+    type: 'link',
+    to: '/specimen/add',
+  },
+  {
+    label: 'Masterlist',
+    type: 'link',
+    to: '/specimen/masterlist',
   },
 ]
 </script>
