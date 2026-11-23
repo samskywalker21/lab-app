@@ -12,6 +12,10 @@
 <script lang="ts" setup>
 import type { TabsItem } from '@nuxt/ui'
 
+useHead( {
+  title: 'Sign-in',
+} )
+
 definePageMeta( {
   layout: 'auth',
 } )

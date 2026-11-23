@@ -1,4 +1,3 @@
-import * as ui from '#build/ui';
 <template>
   <UApp
     :toaster="{
@@ -10,3 +9,11 @@ import * as ui from '#build/ui';
     </NuxtLayout>
   </UApp>
 </template>
+
+<script lang="ts" setup>
+useHead( {
+  titleTemplate( title ) {
+    return title ? `${ title } • Laboratory App` : 'Laboratory App'
+  },
+} )
+</script>
