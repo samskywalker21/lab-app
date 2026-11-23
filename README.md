@@ -66,14 +66,14 @@ pnpm dev
 
 ## Scripts
 
-| Command        | Description                       |
-| -------------- | --------------------------------- |
-| `pnpm dev`     | Start the development server      |
-| `pnpm build`   | Build for production              |
-| `pnpm preview` | Preview the production build      |
-| `pnpm generate`| Generate a static site            |
-| `pnpm lint`    | Check the code with Biome         |
-| `pnpm format`  | Format the code with Biome        |
+| Command         | Description                  |
+| --------------- | ---------------------------- |
+| `pnpm dev`      | Start the development server |
+| `pnpm build`    | Build for production         |
+| `pnpm preview`  | Preview the production build |
+| `pnpm generate` | Generate a static site       |
+| `pnpm lint`     | Check the code with Biome    |
+| `pnpm format`   | Format the code with Biome   |
 
 ## Project Structure
 
