@@ -82,3 +82,12 @@ model Verification {
   @@index([identifier])
   @@map("verification")
 }
+
+model Facility {
+  id     Int     @id @default(autoincrement())
+  name   String  @unique
+  active Boolean @default(true)
+
+  @@index([name])
+  @@map("facilities")
+}
