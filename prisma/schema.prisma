@@ -17,20 +17,35 @@ enum Role {
   admin
 }
 
+enum History {
+  new
+  ret
+}
+
+enum SpecimenStatus {
+  accepted
+  rejected
+  onhold
+}
+
 model User {
-  id            String    @id @default(uuid(7))
-  name          String
-  firstName     String
-  lastName      String
-  role          Role      @default(user)
-  username      String    @unique
-  email         String
-  emailVerified Boolean   @default(false)
-  image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  sessions      Session[]
-  accounts      Account[]
+  id                    String         @id @default(uuid(7))
+  name                  String
+  firstName             String
+  lastName              String
+  role                  Role           @default(user)
+  username              String         @unique
+  email                 String
+  emailVerified         Boolean        @default(false)
+  image                 String?
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
+  sessions              Session[]
+  accounts              Account[]
+  specimenLogged        Specimen[]     @relation(name: "SpecimenLoggedBy")
+  specimenUpdated       Specimen[]     @relation(name: "SpecimenUpdatedBy")
+  specimenTestsLogged   SpecimenTest[] @relation(name: "SpecimenTestLoggedBy")
+  specimenTestsReleased SpecimenTest[] @relation(name: "SpecimenTestReleasedBy")
 
   @@map("users")
 }
@@ -84,10 +99,77 @@ model Verification {
 }
 
 model Facility {
-  id     Int     @id @default(autoincrement())
-  name   String  @unique
-  active Boolean @default(true)
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  active    Boolean    @default(true)
+  specimens Specimen[]
 
   @@index([name])
   @@map("facilities")
+}
+
+model Reason {
+  id        Int        @id @default(autoincrement())
+  name      String
+  code      String     @unique
+  active    Boolean    @default(true)
+  specimens Specimen[]
+
+  @@map("reasons")
+}
+
+model Test {
+  id            Int            @id @default(autoincrement())
+  name          String
+  code          String         @unique
+  active        Boolean        @default(true)
+  specimenTests SpecimenTest[]
+
+  @@map("tests")
+}
+
+model Specimen {
+  id            Int             @id @default(autoincrement())
+  serial        String?         @unique
+  firstName     String
+  lastName      String
+  middleName    String?
+  facilityId    Int
+  facility      Facility        @relation(fields: [facilityId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  history       History         @default(new)
+  reasonId      Int
+  reason        Reason          @relation(fields: [reasonId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  followUp      Int?
+  consistency   String?
+  volume        String?
+  dateCollected DateTime        @default(now())
+  dateReceived  DateTime        @default(now())
+  status        SpecimenStatus?
+  remarks       String?
+  loggedAt      DateTime        @default(now())
+  loggedById    String
+  loggedBy      User            @relation(name: "SpecimenLoggedBy", fields: [loggedById], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  updatedAt     DateTime        @updatedAt()
+  updatedById   String
+  updatedBy     User            @relation(name: "SpecimenUpdatedBy", fields: [updatedById], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  specimenTests SpecimenTest[]
+
+  @@map("specimens")
+}
+
+model SpecimenTest {
+  specimenId   Int
+  specimen     Specimen  @relation(fields: [specimenId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  testId       Int
+  test         Test      @relation(fields: [testId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  releasedBy   User?     @relation(name: "SpecimenTestReleasedBy", fields: [releasedById], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  dateReleased DateTime?
+  releasedById String?
+  loggedById   String
+  loggedBy     User      @relation(name: "SpecimenTestLoggedBy", fields: [loggedById], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  status       String?
+  result       String?
+
+  @@id(fields: [specimenId, testId])
+  @@map("specimen_tests")
 }
