@@ -15,7 +15,7 @@
           />
         </section>
       </LayoutHeader>
-      <section class="flex flex-col flex-1 p-6">
+      <section class="flex flex-col flex-1 p-6 overflow-x-hidden">
         <slot />
       </section>
       <LayoutPageFooter />

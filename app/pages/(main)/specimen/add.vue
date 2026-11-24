@@ -1,6 +1,7 @@
 <template>
-  <article class="flex flex-col flex-1">
+  <article class="flex flex-col flex-1 gap-4">
     <LayoutPageHeader icon="i-tabler-microscope-filled" title="Add Specimen" />
+    <SpecimenAddForm />
   </article>
 </template>
 
